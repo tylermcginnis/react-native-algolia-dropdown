@@ -1,7 +1,7 @@
-import React, { Component, PropTypes, StyleSheet, TextInput, View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native'
+import React, { Component, PropTypes, StyleSheet, TextInput, View, Text, Animated, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import algoliasearch from 'algoliasearch/reactnative'
 const { height, width } = Dimensions.get('window')
-const SEARCH_INPUT_HEIGHT = 35
+const SEARCH_INPUT_HEIGHT = 30
 
 function NoResults () {
   return (
@@ -64,7 +64,7 @@ export default class AlgoliaDropdown extends Component {
                   {this.props.children[index].props.title}
                 </Text>
               </View>}
-          {result.hits.map((hit, i) => React.cloneElement(this.props.children[index], {...hit, key: i}))}
+          {result.hits.map((hit, i) => React.cloneElement(this.props.children[index], {data: hit, key: i}))}
         </View>
       )
     })
@@ -86,7 +86,7 @@ export default class AlgoliaDropdown extends Component {
   }
 
   handleFocus () {
-    Animated.timing(this.state.resultsHeight, {toValue: height - SEARCH_INPUT_HEIGHT, duration: 200}).start()
+    Animated.timing(this.state.resultsHeight, {toValue: height - SEARCH_INPUT_HEIGHT, duration: 500}).start()
     Animated.sequence([
       Animated.timing(this.state.cancelWidth, {toValue: 63, duration: 200}),
       Animated.timing(this.state.cancelOpacity, {toValue: 1, duration: 200}),
@@ -98,7 +98,7 @@ export default class AlgoliaDropdown extends Component {
     this.input.blur()
     this.setState({showOverlay: false, results: []})
     this.input.clear()
-    Animated.timing(this.state.resultsHeight, {toValue: 0, duration: 200}).start()
+    Animated.timing(this.state.resultsHeight, {toValue: 0, duration: 500}).start()
     Animated.sequence([
       Animated.timing(this.state.cancelOpacity, {toValue: 0, duration: 200}),
       Animated.timing(this.state.cancelWidth, {toValue: 0, duration: 200}),
@@ -115,7 +115,7 @@ export default class AlgoliaDropdown extends Component {
       padding: 7,
       paddingLeft: 15,
       paddingRight: 15,
-      margin: 10,
+      margin: 5,
       backgroundColor: '#F3F3F3',
       color: '#4E595D'
     }
@@ -127,7 +127,7 @@ export default class AlgoliaDropdown extends Component {
 
   render () {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <View style={styles.searchContainer}>
           <TextInput
             ref={(ref) => this.input = ref}
@@ -144,11 +144,13 @@ export default class AlgoliaDropdown extends Component {
               </Animated.Text>
           </TouchableOpacity>
         </View>
-        <Animated.View style={{height: this.state.resultsHeight, backgroundColor: this.props.resultsContainerBackgroundColor}}>
-          {this.state.showOverlay === true ?
-            this.state.results
-            : null}
-        </Animated.View>
+        <ScrollView automaticallyAdjustContentInsets={false}>
+          <Animated.View style={{height: this.state.resultsHeight, backgroundColor: this.props.resultsContainerBackgroundColor}}>
+            {this.state.showOverlay === true ?
+              this.state.results
+              : null}
+          </Animated.View>
+        </ScrollView>
       </View>
     )
   }
@@ -162,6 +164,7 @@ AlgoliaDropdown.propTypes = {
   inputStyle: PropTypes.object,
   resultsContainerBackgroundColor: PropTypes.string,
   noResultsWrapper: PropTypes.element,
+  style: PropTypes.object,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.node),
     React.PropTypes.node,
@@ -173,6 +176,7 @@ AlgoliaDropdown.defaultProps = {
   cancelText: 'Cancel',
   cancelButtonColor: '#4E595D',
   resultsContainerBackgroundColor: '#fff',
+  backgroundColor: '#fff',
 }
 
 const styles = StyleSheet.create({
@@ -181,19 +185,17 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   searchContainer: {
-    flex: 1,
+    height: SEARCH_INPUT_HEIGHT + 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
   defaultTitleContainer: {
-    flex: 1,
     justifyContent: 'center',
-    marginBottom: 10,
-    padding: 15,
+    padding: 12,
     backgroundColor: '#F7F9F9',
   },
   defaultTitleText: {
-    fontSize: 17,
+    fontSize: 15,
     color: '#929292'
   },
   noResultsContainer: {
