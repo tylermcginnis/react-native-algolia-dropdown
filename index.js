@@ -146,8 +146,9 @@ export default class AlgoliaDropdown extends Component {
         </View>
         <Animated.View style={{height: this.state.resultsHeight, backgroundColor: this.props.resultsContainerBackgroundColor}}>
           {this.state.showOverlay === true
-            ? <ScrollView automaticallyAdjustContentInsets={false}>
+            ? <ScrollView automaticallyAdjustContentInsets={false} keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps={true}>
                 {this.state.results}
+                {this.props.footerHeight ? <View style={{height: this.props.footerHeight}} /> : null}
               </ScrollView>
             : null}
         </Animated.View>
@@ -165,6 +166,7 @@ AlgoliaDropdown.propTypes = {
   resultsContainerBackgroundColor: PropTypes.string,
   noResultsWrapper: PropTypes.element,
   style: PropTypes.object,
+  footerHeight: PropTypes.number,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.node),
     React.PropTypes.node,
