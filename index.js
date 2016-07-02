@@ -144,13 +144,13 @@ export default class AlgoliaDropdown extends Component {
               </Animated.Text>
           </TouchableOpacity>
         </View>
-        <ScrollView automaticallyAdjustContentInsets={false}>
-          <Animated.View style={{height: this.state.resultsHeight, backgroundColor: this.props.resultsContainerBackgroundColor}}>
-            {this.state.showOverlay === true ?
-              this.state.results
-              : null}
-          </Animated.View>
-        </ScrollView>
+        <Animated.View style={{height: this.state.resultsHeight, backgroundColor: this.props.resultsContainerBackgroundColor}}>
+          {this.state.showOverlay === true
+            ? <ScrollView automaticallyAdjustContentInsets={false}>
+                {this.state.results}
+              </ScrollView>
+            : null}
+        </Animated.View>
       </View>
     )
   }
