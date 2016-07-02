@@ -1,0 +1,26 @@
+{
+  "name": "react-native-algolia-dropdown",
+  "version": "1.0.0",
+  "description": "Real time dropdown search for Algolia with React Native",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tylermcginnis/react-native-algolia-dropdown.git"
+  },
+  "keywords": [
+    "Algolia",
+    "react-native",
+    "algolia",
+    "dropdown",
+    "search"
+  ],
+  "author": "Tyler McGinnis <tylermcginnis33@gmail.com> (http://tylermcginnis.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/tylermcginnis/react-native-algolia-dropdown#readme",
+  "dependencies": {
+    "algoliasearch": "^3.16.0"
+  }
+}
