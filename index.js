@@ -1,5 +1,7 @@
-import React, { Component, PropTypes, StyleSheet, TextInput, View, Text, Animated, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import React, { Component, PropTypes } from 'react'
+import { StyleSheet, TextInput, View, Text, Animated, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import algoliasearch from 'algoliasearch/reactnative'
+
 const { height, width } = Dimensions.get('window')
 const SEARCH_INPUT_HEIGHT = 30
 
