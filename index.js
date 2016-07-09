@@ -15,8 +15,8 @@ function NoResults () {
 
 function validateChildProps (children) {
   children.forEach((child) => {
-    if (typeof child.props.index !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have an "index" attribute.`)
-    if (typeof child.props.title !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have a "title" attribute.`)
+    if (typeof child.props.index !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have an "index" attribute which is a string.`)
+    if (typeof child.props.title !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have a "title" attribute which is a string.`)
     if (typeof child.props.params !== 'undefined' && Object.prototype.toString.call(child.props.params) !== '[object Object]') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} has a params attribute which isn't an object.`)
   })
 }
@@ -137,11 +137,14 @@ export default class AlgoliaDropdown extends Component {
             onFocus={this.handleFocus}
             onChange={this.handleTextChange}
             placeholder={this.props.placeholder} />
+          {this.props.sideComponent && this.state.showOverlay === false
+            ? React.cloneElement(this.props.sideComponent)
+            : null}
           <TouchableOpacity
             style={{width: this.state.cancelWidth}}
             onPress={this.handleRemoveFocus}>
               <Animated.Text
-                style={{opacity: this.state.cancelOpacity, color: this.props.cancelButtonColor, fontSize: 17}}>
+                style={{opacity: this.state.cancelOpacity, color: this.props.cancelButtonColor, fontSize: 17, padding: 2}}>
                   {this.props.cancelText}
               </Animated.Text>
           </TouchableOpacity>
@@ -169,6 +172,7 @@ AlgoliaDropdown.propTypes = {
   noResultsWrapper: PropTypes.element,
   style: PropTypes.object,
   footerHeight: PropTypes.number,
+  sideComponent: PropTypes.element,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.node),
     React.PropTypes.node,
