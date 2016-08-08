@@ -133,6 +133,7 @@ export default class AlgoliaDropdown extends Component {
         <View style={styles.searchContainer}>
           <TextInput
             ref={(ref) => this.input = ref}
+            autoCorrect={false}
             style={this.getInputStyle()}
             onFocus={this.handleFocus}
             onChange={this.handleTextChange}
