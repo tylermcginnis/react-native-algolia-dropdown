@@ -23,5 +23,18 @@ This component is rad. I just haven't had time to document it. If you're using A
 </AlgoliaDropdown>
 ```
 
+
+
 #### Renders this
 ![React Native Algolia Dropdown](https://cloud.githubusercontent.com/assets/2933430/17902287/ed5ad2f2-6923-11e6-9ca1-3dbdae5e74e8.gif)
+
+### Usage
+The index prop on children components of AlgoliaDropdown link an Algolia index with a specific component. This components render method is responsible for displaying an individual hit, each hit is passed down into children components through a prop called 'data'.
+The UserPreview render() method may look something like this:
+```
+render(){
+  return(
+    <Text>{this.props.data.username}</Text>
+  );
+}
+```
