@@ -134,6 +134,7 @@ export default class AlgoliaDropdown extends Component {
           <TextInput
             ref={(ref) => this.input = ref}
             autoCorrect={false}
+            underlineColorAndroid='transparent'
             style={this.getInputStyle()}
             onFocus={this.handleFocus}
             onChange={this.handleTextChange}
