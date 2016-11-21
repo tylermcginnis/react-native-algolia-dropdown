@@ -14,11 +14,17 @@ function NoResults () {
 }
 
 function validateChildProps (children) {
-  children.forEach((child) => {
-    if (typeof child.props.index !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have an "index" attribute which is a string.`)
-    if (typeof child.props.title !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have a "title" attribute which is a string.`)
-    if (typeof child.props.params !== 'undefined' && Object.prototype.toString.call(child.props.params) !== '[object Object]') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} has a params attribute which isn't an object.`)
-  })
+  if(children.isArray){
+    children.forEach((child) => {
+      if (typeof child.props.index !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have an "index" attribute which is a string.`)
+      if (typeof child.props.title !== 'string') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} must have a "title" attribute which is a string.`)
+      if (typeof child.props.params !== 'undefined' && Object.prototype.toString.call(child.props.params) !== '[object Object]') throw new Error(`AlgoliaDropdown: The child component ${child.type.name} has a params attribute which isn't an object.`)
+    })
+  }else{
+    if (typeof children.props.index !== 'string') throw new Error(`AlgoliaDropdown: The child component ${children.type.name} must have an "index" attribute which is a string.`)
+    if (typeof children.props.title !== 'string') throw new Error(`AlgoliaDropdown: The child component ${children.type.name} must have a "title" attribute which is a string.`)
+    if (typeof children.props.params !== 'undefined' && Object.prototype.toString.call(children.props.params) !== '[object Object]') throw new Error(`AlgoliaDropdown: The child component ${children.type.name} has a params attribute which isn't an object.`)
+  }
 }
 
 export default class AlgoliaDropdown extends Component {
@@ -60,13 +66,13 @@ export default class AlgoliaDropdown extends Component {
       return (
         <View key={result.index}>
           {this.props.titleWrapper
-            ? result.hits.length === 0 ? null : React.cloneElement(this.props.titleWrapper, {title: this.props.children[index].props.title})
+            ? result.hits.length === 0 ? null : React.cloneElement(this.props.titleWrapper, {title: this.props.children.isArray ? this.props.children[index].props.title : this.props.children.props.title})
             : result.hits.length === 0 ? null : <View style={styles.defaultTitleContainer}>
                 <Text style={styles.defaultTitleText}>
-                  {this.props.children[index].props.title}
+                  { this.props.children.isArray ? this.props.children[index].props.title : this.props.children.props.title}
                 </Text>
               </View>}
-          {result.hits.map((hit, i) => React.cloneElement(this.props.children[index], {data: hit, key: i}))}
+          {result.hits.map((hit, i) => React.cloneElement( this.props.children.isArray ? this.props.children[index] : this.props.children, {data: hit, key: i}))}
         </View>
       )
     })
@@ -75,11 +81,19 @@ export default class AlgoliaDropdown extends Component {
   }
 
   formatQuery (query) {
-    return this.props.children.map((child) => ({
-      indexName: child.props.index,
-      params: child.props.params,
-      query,
-    }))
+    if(this.props.children.isArray){
+      return this.props.children.map((child) => ({
+        indexName: child.props.index,
+        params: child.props.params,
+        query,
+      }))
+    }else{
+      return [{
+        indexName: this.props.children.props.index,
+        params: this.props.children.props.params,
+        query
+      }]
+    }
   }
 
   handleTextChange (e) {
