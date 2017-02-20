@@ -56,7 +56,7 @@ export default class AlgoliaDropdown extends Component {
       return this.setState({
         results: [
         this.props.noResultsWrapper
-          ? React.cloneElement(this.props.noResultsWrapper, {key: 'NoResults'})
+          ? React.cloneElement(this.props.noResultsWrapper, {key: 'NoResults', query:content.results[0].query})
           : <NoResults key='NoResults' />
         ]
       })
